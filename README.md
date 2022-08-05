@@ -23,7 +23,7 @@
   </a>
 </p>
 
-Hack Heap is a place where all hackathons meet. It makes life of search easier for a person who is looking for different hackathons to take part in and have them all in one place.
+Hack Heap is an application for aggregating all the hackathons. It is a solution created by webscraping popular websites and providing it to you. So you can check them all out easily at one place.
 
 ## HOW TO INSTALL
     
@@ -31,7 +31,7 @@ Hack Heap is a place where all hackathons meet. It makes life of search easier f
 ## TECHNOLOGIES USED
   <p align="left">
   <a href="https://github.com/Infinil/Hack-Heap">
-    <img src="https://i.imgur.com/xPG4G4d.png" height="250"> 
+    <img src="https://i.imgur.com/v7F34Yn.jpg"> 
   </a>
 </p>
 
@@ -39,22 +39,5 @@ Hack Heap is a place where all hackathons meet. It makes life of search easier f
 
 ### SCRAPING
 <p> - Since codes of site can change with time, a constant code is really hard to manage and needs to be updated quite frequently since the code breaks if that is not done. </p>
-    <p>    - Python is a slow language so the executiion takes time. </p>
-
-### COST
-  
-
-
-
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference
+    <p>    - Cloud function can error if any problem occurs in the code which can stop database from updating. </p>
 
