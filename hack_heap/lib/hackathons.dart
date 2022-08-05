@@ -253,7 +253,7 @@ class _HackathonCardState extends ConsumerState<HackathonCard> {
                       fontSize: 16,
                     ),
                   ),
-                  const Padding(
+                  if (widget.hackathonDocument.participants != null) const Padding(
                     padding: EdgeInsets.only(left: 10, right: 2),
                     child: Icon(
                       Icons.person,
@@ -261,8 +261,8 @@ class _HackathonCardState extends ConsumerState<HackathonCard> {
                       size: 20,
                     ),
                   ),
-                  Text(
-                    widget.hackathonDocument.participants == null ? '?' : widget.hackathonDocument.participants!.toString(),
+                  if (widget.hackathonDocument.participants != null) Text(
+                    widget.hackathonDocument.participants!.toString(),
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 16,
