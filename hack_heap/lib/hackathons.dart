@@ -106,7 +106,8 @@ class _HackathonPageState extends ConsumerState<HackathonPage> {
     final DocumentList fetchedDocuments = await ref.read(appwriteDatabaseProvider).listDocuments(
       collectionId: ref.read(hackathonsCIDProvider),
       queries: [ 
-        Query.equal('source', widget.selectedSource)
+        Query.equal('source', widget.selectedSource),
+        Query.greaterEqual('date', Jiffy().unix())
       ],
       limit: 100,
       offset: 0,
@@ -146,7 +147,7 @@ class _HackathonPageState extends ConsumerState<HackathonPage> {
             child: Column(
               children: snapshot.data!.map(
                 (currentDocument) {
-                  return HackathonCard();
+                  return HackathonCard(hackathonDocument: currentDocument);
                 }
               ).toList(),
             ),
@@ -178,7 +179,8 @@ class _HackathonPageState extends ConsumerState<HackathonPage> {
 }
 
 class HackathonCard extends ConsumerStatefulWidget {
-  const HackathonCard({Key? key}) : super(key: key);
+  const HackathonCard({required this.hackathonDocument, Key? key}) : super(key: key);
+  final HackathonDocument hackathonDocument;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _HackathonCardState();
@@ -188,6 +190,37 @@ class _HackathonCardState extends ConsumerState<HackathonCard> {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Container(
+      margin: const EdgeInsets.all(15),
+      width: 400,
+      height: 300,
+      child: Card(
+        elevation: 3,
+        color: const Color.fromARGB(255, 48, 74, 77),
+        clipBehavior: Clip.antiAlias,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8)
+        ),
+        child: Column(
+          children: [
+            Image.network(
+              widget.hackathonDocument.image,
+              fit: BoxFit.cover,
+              height: 180,
+              width: double.infinity,
+              errorBuilder: (context, child, error) {
+                return const Center(
+                  child: Icon(
+                    Icons.warning,
+                    color: Colors.orangeAccent,
+                    size: 45,
+                  ),
+                );
+              },
+            ) 
+          ],
+        ),
+      ),
+    );
   }
 }
