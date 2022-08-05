@@ -21,9 +21,9 @@ class _HackathonsPageState extends State<HackathonsPage> {
     return DefaultTabController(
       length: 3,
       child: Scaffold(
-        backgroundColor: const Color.fromARGB(255, 34, 45, 52),
+        backgroundColor: const Color.fromARGB(255, 15, 44, 80),
         appBar: AppBar(
-          backgroundColor: const Color.fromARGB(255, 53, 79, 82),
+          backgroundColor: const Color.fromARGB(255, 58, 78, 122),
           title: const Text('Hack Heap'),
           actions: [
             Padding(
@@ -44,7 +44,7 @@ class _HackathonsPageState extends State<HackathonsPage> {
                   tabs.elementAt(0),
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
-                    fontSize: 16
+                    fontSize: 18
                   ),
                 )
               ),
@@ -54,7 +54,7 @@ class _HackathonsPageState extends State<HackathonsPage> {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
-                    fontSize: 16
+                    fontSize: 18
                   ),
                 )
               ),
@@ -63,7 +63,7 @@ class _HackathonsPageState extends State<HackathonsPage> {
                   tabs.elementAt(2),
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
-                    fontSize: 16
+                    fontSize: 18
                   ),
                 )
               ),
@@ -193,10 +193,10 @@ class _HackathonCardState extends ConsumerState<HackathonCard> {
     return Container(
       margin: const EdgeInsets.all(15),
       width: 400,
-      height: 300,
+      height: 330,
       child: Card(
         elevation: 3,
-        color: const Color.fromARGB(255, 48, 74, 77),
+        color: const Color.fromARGB(255, 58, 86, 127),
         clipBehavior: Clip.antiAlias,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8)
@@ -217,7 +217,76 @@ class _HackathonCardState extends ConsumerState<HackathonCard> {
                   ),
                 );
               },
-            ) 
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 15),
+              child: Text(
+                widget.hackathonDocument.name,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontFamily: 'Electrolize',
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 2),
+              child: Text(
+                widget.hackathonDocument.timeline.toUpperCase(),
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w300
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 5),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    widget.hackathonDocument.mode.toUpperCase(),
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                    ),
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.only(left: 10, right: 2),
+                    child: Icon(
+                      Icons.person,
+                      color: Colors.white,
+                      size: 20,
+                    ),
+                  ),
+                  Text(
+                    widget.hackathonDocument.participants == null ? '?' : widget.hackathonDocument.participants!.toString(),
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: ElevatedButton(
+                onPressed: (){}, 
+                child: const Padding(
+                  padding: EdgeInsets.all(4),
+                  child: Text(
+                    'Redirect',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                    ),
+                  ),
+                ),
+              ),
+            )
           ],
         ),
       ),
