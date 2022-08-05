@@ -31,7 +31,7 @@ Hack Heap is an application for aggregating all the hackathons. It is a solution
 ## TECHNOLOGIES USED
   <p align="left">
   <a href="https://github.com/Infinil/Hack-Heap">
-    <img src="https://i.imgur.com/xPG4G4d.png" height="250"> 
+    <img src="https://i.imgur.com/v7F34Yn.jpg"> 
   </a>
 </p>
 
