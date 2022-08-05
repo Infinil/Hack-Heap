@@ -360,7 +360,7 @@ class _CustomWebViewState extends State<CustomWebView> {
               LinearProgressIndicator(
                 value: progress,
                 backgroundColor: const Color.fromARGB(255, 58, 78, 122),
-                color: progress < 1.0 ? Colors.white : null,
+                color: progress < 1.0 ? Colors.white : const Color.fromARGB(255, 58, 78, 122),
                 minHeight: 3,
               ),
               Expanded(
