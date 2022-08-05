@@ -1,5 +1,4 @@
-import 'package:flutter/material.dart';
-import 'backend.dart';
+import 'barrel.dart';
 
 class HackathonsPage extends StatefulWidget {
   const HackathonsPage({Key? key}) : super(key: key);
@@ -14,9 +13,9 @@ class _HackathonsPageState extends State<HackathonsPage> {
     return DefaultTabController(
       length: 3,
       child: Scaffold(
-        backgroundColor: const Color.fromARGB(255, 100, 100, 255),
+        backgroundColor: const Color.fromARGB(255, 34, 45, 52),
         appBar: AppBar(
-          backgroundColor: const Color.fromARGB(255, 40, 0, 170),
+          backgroundColor: const Color.fromARGB(255, 53, 79, 82),
           title: const Text('Hack Heap'),
           actions: [
             Padding(

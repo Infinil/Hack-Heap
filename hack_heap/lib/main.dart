@@ -1,6 +1,4 @@
-import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'barrel.dart';
 import 'package:hack_heap/hackathons.dart';
 
 void main() async {
