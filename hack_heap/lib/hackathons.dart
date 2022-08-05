@@ -1,7 +1,7 @@
-import 'package:appwrite/appwrite.dart';
-
 import 'barrel.dart';
+import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart';
+
 
 class HackathonsPage extends StatefulWidget {
   const HackathonsPage({Key? key}) : super(key: key);
@@ -274,7 +274,16 @@ class _HackathonCardState extends ConsumerState<HackathonCard> {
             Padding(
               padding: const EdgeInsets.only(top: 8),
               child: ElevatedButton(
-                onPressed: (){}, 
+                onPressed: (){
+                  if (Platform.isAndroid || Platform.isIOS) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => CustomWebView(url: widget.hackathonDocument.url)
+                      ),
+                    );
+                  }
+                }, 
                 child: const Padding(
                   padding: EdgeInsets.all(4),
                   child: Text(
@@ -288,6 +297,84 @@ class _HackathonCardState extends ConsumerState<HackathonCard> {
               ),
             )
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class CustomWebView extends StatefulWidget {
+  const CustomWebView({required this.url, Key? key}) : super(key: key);
+  final String url;
+
+  @override
+  State<CustomWebView> createState() => _CustomWebViewState();
+}
+
+class _CustomWebViewState extends State<CustomWebView> {
+  double progress = 0;
+  late final WebViewController _webViewController;
+
+  @override
+  Widget build(BuildContext context) {
+    return WillPopScope(
+      onWillPop: () async {
+        if (await _webViewController.canGoBack()) {
+          await _webViewController.goBack();
+          return false;
+        }
+        return true;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: const Color.fromARGB(255, 58, 78, 122),
+          leading: IconButton(
+            onPressed: () => Navigator.of(context).pop(),
+            icon: const Icon(
+              Icons.close,
+              size: 30,
+            ),
+          ),
+          actions: [
+            IconButton(
+              onPressed: () async {
+                await _webViewController.canGoBack() ? await _webViewController.goBack() : Navigator.of(context).pop();
+              }, 
+              icon: const Icon(
+                CupertinoIcons.back,
+                size: 30,
+              )
+            ),
+            IconButton(
+              onPressed: () => _webViewController.reload(), 
+              icon: const Icon(
+                Icons.refresh,
+                size: 30,
+              )
+            )
+          ],
+        ),
+        body: SafeArea(
+          child: Column(
+            children: [
+              LinearProgressIndicator(
+                value: progress,
+                backgroundColor: const Color.fromARGB(255, 58, 78, 122),
+                color: progress < 1.0 ? Colors.white : null,
+                minHeight: 3,
+              ),
+              Expanded(
+                child: WebView(
+                  initialUrl: widget.url,
+                  javascriptMode: JavascriptMode.unrestricted,
+                  onProgress: (progress) => setState(() => this.progress = progress/100),
+                  onWebViewCreated: (controller) {
+                    _webViewController = controller;
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
