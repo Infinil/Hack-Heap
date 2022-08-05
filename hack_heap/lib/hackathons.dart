@@ -1,4 +1,7 @@
+import 'package:appwrite/appwrite.dart';
+
 import 'barrel.dart';
+import 'package:appwrite/models.dart';
 
 class HackathonsPage extends StatefulWidget {
   const HackathonsPage({Key? key}) : super(key: key);
@@ -9,6 +12,9 @@ class HackathonsPage extends StatefulWidget {
 
 class _HackathonsPageState extends State<HackathonsPage> {
   final List<String> tabs = ['Devfolio', 'Hackerearth', 'MLH'];
+  final ReloadTabsController _reloadTabsController = ReloadTabsController();
+
+  void refreshTab() => _reloadTabsController.hackathonsReload();
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +28,12 @@ class _HackathonsPageState extends State<HackathonsPage> {
           actions: [
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: IconButton(onPressed: (){}, icon: const Icon(Icons.refresh, size: 28,)),
+              child: IconButton(
+                onPressed: () {
+                  refreshTab();
+                }, 
+                icon: const Icon(Icons.refresh, size: 32,)
+              ),
             )
           ],
           bottom: TabBar(
@@ -62,9 +73,9 @@ class _HackathonsPageState extends State<HackathonsPage> {
         body: SafeArea(
           child: TabBarView(
             children: [
-              HackathonPage(selectedSource: tabs.elementAt(0)),
-              HackathonPage(selectedSource: tabs.elementAt(1)),
-              HackathonPage(selectedSource: tabs.elementAt(2)),
+              HackathonPage(reloadTabsController: _reloadTabsController, selectedSource: tabs.elementAt(0)),
+              HackathonPage(reloadTabsController: _reloadTabsController, selectedSource: tabs.elementAt(1)),
+              HackathonPage(reloadTabsController: _reloadTabsController, selectedSource: tabs.elementAt(2)),
             ],
           ),
         ),
@@ -74,7 +85,8 @@ class _HackathonsPageState extends State<HackathonsPage> {
 }
 
 class HackathonPage extends ConsumerStatefulWidget {
-  const HackathonPage({required this.selectedSource, Key? key}) : super(key: key);
+  const HackathonPage({required this.reloadTabsController, required this.selectedSource, Key? key}) : super(key: key);
+  final ReloadTabsController reloadTabsController;
   final String selectedSource;
 
   @override
@@ -82,10 +94,86 @@ class HackathonPage extends ConsumerStatefulWidget {
 }
 
 class _HackathonPageState extends ConsumerState<HackathonPage> {
+  late Future<List<HackathonDocument>> _allHackathons;
+
+  void _refreshHackathons() {
+    _allHackathons = _fetchHackathons();
+    if (mounted) setState(() {});
+  }
+
+  Future<List<HackathonDocument>> _fetchHackathons() async {
+    final List<HackathonDocument> allHackathons = [];
+    final DocumentList fetchedDocuments = await ref.read(appwriteDatabaseProvider).listDocuments(
+      collectionId: ref.read(hackathonsCIDProvider),
+      queries: [ 
+        Query.equal('source', widget.selectedSource)
+      ],
+      limit: 100,
+      offset: 0,
+      orderAttributes: ['date'],
+      orderTypes: ['ASC']
+    );
+    for (final Document currentDoc in fetchedDocuments.documents) {
+      allHackathons.add(
+        HackathonDocument(
+          name: currentDoc.data['name'],
+          participants: currentDoc.data['participants'],
+          mode: currentDoc.data['mode'],
+          timeline: currentDoc.data['timeline'],
+          date: currentDoc.data['date'],
+          image: currentDoc.data['image'],
+          url: currentDoc.data['url']
+        )
+      );
+    }
+    return allHackathons;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    widget.reloadTabsController.hackathonsReload = _refreshHackathons;
+    _allHackathons = _fetchHackathons();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return FutureBuilder<List<HackathonDocument>>(
+      future: _allHackathons,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
+          return SingleChildScrollView(
+            child: Column(
+              children: snapshot.data!.map(
+                (currentDocument) {
+                  return HackathonCard();
+                }
+              ).toList(),
+            ),
+          );
+        }
+        else if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(
+            child: SizedBox(
+              height: 40,
+              width: 40,
+              child: CircularProgressIndicator(
+                color: Colors.white,
+              ),
+            ),
+          ); 
+        }
+        else {
+          return const Center(
+            child: Icon(
+              Icons.error,
+              color: Colors.red,
+              size: 50,
+            ),
+          ); 
+        }
+      }
+    );
   }
 }
 

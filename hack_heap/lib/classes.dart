@@ -1,7 +1,9 @@
+import 'package:flutter/material.dart';
+
 class HackathonDocument {
   HackathonDocument({
-    required this.participants,
-    required this.startDate,
+    this.participants,
+    required this.date,
     required this.image,
     required this.mode,
     required this.name,
@@ -9,11 +11,15 @@ class HackathonDocument {
     required this.url
   });
   
-  final int participants;
-  final int startDate;
+  final int date;
+  final int? participants;
   final String image;
-  final String name;
   final String mode;
+  final String name;
   final String timeline;
   final String url;
+}
+
+class ReloadTabsController {
+  VoidCallback hackathonsReload = (){};
 }
