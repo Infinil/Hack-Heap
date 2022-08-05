@@ -8,6 +8,8 @@ class HackathonsPage extends StatefulWidget {
 }
 
 class _HackathonsPageState extends State<HackathonsPage> {
+  final List<String> tabs = ['Devfolio', 'Hackerearth', 'MLH'];
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -23,33 +25,33 @@ class _HackathonsPageState extends State<HackathonsPage> {
               child: IconButton(onPressed: (){}, icon: const Icon(Icons.refresh, size: 28,)),
             )
           ],
-          bottom: const TabBar(
+          bottom: TabBar(
             indicatorColor: Colors.white,
             tabs: [
               Tab(
                 child: Text(
-                  'Devfolio',
+                  tabs.elementAt(0),
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 16
                   ),
                 )
               ),
               Tab(
                 child: Text(
-                  'Hackerearth',
+                  tabs.elementAt(1),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 16
                   ),
                 )
               ),
               Tab(
                 child: Text(
-                  'MLH',
+                  tabs.elementAt(2),
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 16
                   ),
                 )
@@ -57,16 +59,47 @@ class _HackathonsPageState extends State<HackathonsPage> {
             ]
           )
         ),
-        body: const SafeArea(
+        body: SafeArea(
           child: TabBarView(
             children: [
-              Icon(Icons.directions_car),
-              Icon(Icons.directions_transit),
-              Icon(Icons.directions_bike),
+              HackathonPage(selectedSource: tabs.elementAt(0)),
+              HackathonPage(selectedSource: tabs.elementAt(1)),
+              HackathonPage(selectedSource: tabs.elementAt(2)),
             ],
           ),
         ),
       ),
     );
+  }
+}
+
+class HackathonPage extends ConsumerStatefulWidget {
+  const HackathonPage({required this.selectedSource, Key? key}) : super(key: key);
+  final String selectedSource;
+
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() => _HackathonPageState();
+}
+
+class _HackathonPageState extends ConsumerState<HackathonPage> {
+
+  @override
+  Widget build(BuildContext context) {
+    return Container();
+  }
+}
+
+class HackathonCard extends ConsumerStatefulWidget {
+  const HackathonCard({Key? key}) : super(key: key);
+
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() => _HackathonCardState();
+}
+
+class _HackathonCardState extends ConsumerState<HackathonCard> {
+
+  @override
+  Widget build(BuildContext context) {
+    return Container();
   }
 }
