@@ -20,6 +20,9 @@
 Hack Heap is an application for aggregating all the hackathons. It is a solution created by webscraping popular websites and providing it to you. So you can check them all out easily at one place.
 
 ## HOW TO INSTALL
+<p> 1) Go to file `app-release.apk` from an android phnoe. </p>
+<p> 2) Click on download file. </p>
+<p> 3) Install the APK. </p>
 
 ## IMPLEMENTATION
 * Made a python script for webscraping.
