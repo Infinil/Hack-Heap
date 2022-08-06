@@ -12,9 +12,15 @@ class HackathonsPage extends StatefulWidget {
 
 class _HackathonsPageState extends State<HackathonsPage> {
   final List<String> tabs = ['Devfolio', 'Hackerearth', 'MLH'];
-  final ReloadTabsController _reloadTabsController = ReloadTabsController();
+  final ForwardController _forwardController = ForwardController();
 
-  void refreshTab() => _reloadTabsController.hackathonsReload();
+  void refreshTab() => _forwardController.hackathonsReload();
+
+  @override
+  void initState() {
+    super.initState();
+    _forwardController.initializeSettings();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,13 +32,25 @@ class _HackathonsPageState extends State<HackathonsPage> {
           backgroundColor: const Color.fromARGB(255, 58, 78, 122),
           title: const Text('Hack Heap'),
           actions: [
+            IconButton(
+              onPressed: () {
+                if (
+                  _forwardController.notificationTitle != null 
+                  && _forwardController.notificationDescription != null
+                  && Platform.isAndroid
+                ) {
+                  _forwardController.showNotifications();
+                }
+              }, 
+              icon: const Icon(Icons.notifications, size: 28,)
+            ),
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.symmetric(horizontal: 10),
               child: IconButton(
                 onPressed: () {
                   refreshTab();
                 }, 
-                icon: const Icon(Icons.refresh, size: 32,)
+                icon: const Icon(Icons.refresh, size: 28,)
               ),
             )
           ],
@@ -73,9 +91,9 @@ class _HackathonsPageState extends State<HackathonsPage> {
         body: SafeArea(
           child: TabBarView(
             children: [
-              HackathonPage(reloadTabsController: _reloadTabsController, selectedSource: tabs.elementAt(0)),
-              HackathonPage(reloadTabsController: _reloadTabsController, selectedSource: tabs.elementAt(1)),
-              HackathonPage(reloadTabsController: _reloadTabsController, selectedSource: tabs.elementAt(2)),
+              HackathonPage(forwardController: _forwardController, selectedSource: tabs.elementAt(0)),
+              HackathonPage(forwardController: _forwardController, selectedSource: tabs.elementAt(1)),
+              HackathonPage(forwardController: _forwardController, selectedSource: tabs.elementAt(2)),
             ],
           ),
         ),
@@ -85,8 +103,8 @@ class _HackathonsPageState extends State<HackathonsPage> {
 }
 
 class HackathonPage extends ConsumerStatefulWidget {
-  const HackathonPage({required this.reloadTabsController, required this.selectedSource, Key? key}) : super(key: key);
-  final ReloadTabsController reloadTabsController;
+  const HackathonPage({required this.forwardController, required this.selectedSource, Key? key}) : super(key: key);
+  final ForwardController forwardController;
   final String selectedSource;
 
   @override
@@ -127,13 +145,18 @@ class _HackathonPageState extends ConsumerState<HackathonPage> {
         )
       );
     }
+    widget.forwardController.notificationTitle = allHackathons.elementAt(0).name;
+    widget.forwardController.notificationDescription = 'Starts from ${
+      allHackathons.elementAt(0).timeline
+    }. Check out now!';
+    widget.forwardController.notificationIcon = allHackathons.elementAt(0).url;
     return allHackathons;
   }
 
   @override
   void initState() {
     super.initState();
-    widget.reloadTabsController.hackathonsReload = _refreshHackathons;
+    widget.forwardController.hackathonsReload = _refreshHackathons;
     _allHackathons = _fetchHackathons();
   }
 
@@ -274,16 +297,7 @@ class _HackathonCardState extends ConsumerState<HackathonCard> {
             Padding(
               padding: const EdgeInsets.only(top: 8),
               child: ElevatedButton(
-                onPressed: (){
-                  if (Platform.isAndroid || Platform.isIOS) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => CustomWebView(url: widget.hackathonDocument.url)
-                      ),
-                    );
-                  }
-                }, 
+                onPressed: () => showWebView(context: context, url: widget.hackathonDocument.url), 
                 child: const Padding(
                   padding: EdgeInsets.all(4),
                   child: Text(
@@ -298,6 +312,17 @@ class _HackathonCardState extends ConsumerState<HackathonCard> {
             )
           ],
         ),
+      ),
+    );
+  }
+}
+
+void showWebView({required BuildContext context, required String url}) {
+  if (Platform.isAndroid || Platform.isIOS) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CustomWebView(url: url)
       ),
     );
   }

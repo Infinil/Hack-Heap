@@ -1,6 +1,7 @@
 export 'dart:io';
 export 'package:flutter/cupertino.dart' hide RefreshCallback;
 export 'package:flutter/gestures.dart';
+export 'package:flutter_local_notifications/flutter_local_notifications.dart';
 export 'package:flutter/material.dart';
 export 'package:flutter_riverpod/flutter_riverpod.dart';
 export 'package:webview_flutter/webview_flutter.dart';
