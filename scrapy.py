@@ -24,13 +24,24 @@ class WebScrape:
     self.request = request
   
   def common_operations(self, dict_data: dict):
-    pass
+    docs = self.database.list_documents(
+      self.request.env['COLLECTION_ID'],
+      queries=[
+        Query.equal('url', dict_data['url'])
+      ]
+    )
+    if docs['total'] == 0:
+      self.database.create_document(
+        collection_id = self.request.env['COLLECTION_ID'],
+        document_id = 'unique()',
+        data = dict_data
+      )
 
   def devfolio(self):
-    pass
+    source = 'devfolio'
   
   def hackerearth(self):
-    pass
+    source = 'hackerearth'
   
   def mlh(self):
-    pass
+    source = 'mlh'
