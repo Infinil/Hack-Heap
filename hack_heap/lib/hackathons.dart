@@ -170,7 +170,7 @@ class _HackathonPageState extends ConsumerState<HackathonPage> {
             child: Column(
               children: snapshot.data!.map(
                 (currentDocument) {
-                  return HackathonCard(hackathonDocument: currentDocument);
+                  return HackathonCard(isMLH: widget.selectedSource == 'MLH', hackathonDocument: currentDocument);
                 }
               ).toList(),
             ),
@@ -202,7 +202,8 @@ class _HackathonPageState extends ConsumerState<HackathonPage> {
 }
 
 class HackathonCard extends ConsumerStatefulWidget {
-  const HackathonCard({required this.hackathonDocument, Key? key}) : super(key: key);
+  const HackathonCard({required this.isMLH, required this.hackathonDocument, Key? key}) : super(key: key);
+  final bool isMLH;
   final HackathonDocument hackathonDocument;
 
   @override
@@ -216,7 +217,7 @@ class _HackathonCardState extends ConsumerState<HackathonCard> {
     return Container(
       margin: const EdgeInsets.all(15),
       width: 400,
-      height: 330,
+      height: widget.isMLH ? 150 : 330,
       child: Card(
         elevation: 3,
         color: const Color.fromARGB(255, 58, 86, 127),
@@ -226,7 +227,7 @@ class _HackathonCardState extends ConsumerState<HackathonCard> {
         ),
         child: Column(
           children: [
-            Image.network(
+            if (!widget.isMLH) Image.network(
               widget.hackathonDocument.image,
               fit: BoxFit.cover,
               height: 180,
