@@ -16,12 +16,6 @@
     <img src ="https://img.shields.io/github/issues-pr-closed/Infinil/Hack-Heap" alt = "Closed Pull Requests">
   </a>
  </p>
-    
-<p align="left">
-  <a href="https://github.com/Infinil/Hack-Heap">
-    <img src="https://i.imgur.com/N1YYsWj.png" height="50"> 
-  </a>
-</p>
 
 Hack Heap is an application for aggregating all the hackathons. It is a solution created by webscraping popular websites and providing it to you. So you can check them all out easily at one place.
 
