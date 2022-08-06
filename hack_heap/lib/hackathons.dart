@@ -44,7 +44,7 @@ class _HackathonsPageState extends State<HackathonsPage> {
                   tabs.elementAt(0),
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
-                    fontSize: 18
+                    fontSize: 17
                   ),
                 )
               ),
@@ -54,7 +54,7 @@ class _HackathonsPageState extends State<HackathonsPage> {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
-                    fontSize: 18
+                    fontSize: 17
                   ),
                 )
               ),
@@ -63,7 +63,7 @@ class _HackathonsPageState extends State<HackathonsPage> {
                   tabs.elementAt(2),
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
-                    fontSize: 18
+                    fontSize: 17
                   ),
                 )
               ),
