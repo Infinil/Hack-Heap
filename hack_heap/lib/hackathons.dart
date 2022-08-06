@@ -37,7 +37,9 @@ class _HackathonsPageState extends State<HackathonsPage> {
                 if (
                   _forwardController.notificationTitle != null 
                   && _forwardController.notificationDescription != null
-                  && Platform.isAndroid
+                  && _forwardController.notificationPayload != null
+                  && _forwardController.context != null
+                  && (Platform.isAndroid || Platform.isIOS)
                 ) {
                   _forwardController.showNotifications();
                 }
@@ -149,7 +151,7 @@ class _HackathonPageState extends ConsumerState<HackathonPage> {
     widget.forwardController.notificationDescription = 'Starts from ${
       allHackathons.elementAt(0).timeline
     }. Check out now!';
-    widget.forwardController.notificationIcon = allHackathons.elementAt(0).url;
+    widget.forwardController.notificationPayload = allHackathons.elementAt(0).url;
     return allHackathons;
   }
 
@@ -162,6 +164,7 @@ class _HackathonPageState extends ConsumerState<HackathonPage> {
 
   @override
   Widget build(BuildContext context) {
+    widget.forwardController.context = context;
     return FutureBuilder<List<HackathonDocument>>(
       future: _allHackathons,
       builder: (context, snapshot) {

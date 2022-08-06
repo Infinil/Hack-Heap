@@ -41,6 +41,12 @@ dependencies:
   jiffy: ^5.0.0
   webview_flutter: ^3.0.4
   flutter_local_notifications: ^9.7.0
+  flutter_launcher_icons: ^0.9.3
+
+flutter_icons:
+  image_path : "assets/images/icon.png"
+  android: true
+  ios: true
 
 dev_dependencies:
   flutter_test:

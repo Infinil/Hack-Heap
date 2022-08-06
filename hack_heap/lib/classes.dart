@@ -1,4 +1,5 @@
 import 'package:hack_heap/barrel.dart';
+import 'package:hack_heap/hackathons.dart';
 
 class HackathonDocument {
   HackathonDocument({
@@ -24,6 +25,7 @@ class ForwardController {
   VoidCallback hackathonsReload = (){};
 
   static final _notifications = FlutterLocalNotificationsPlugin();
+  BuildContext? context;
   String? notificationTitle;
   String? notificationDescription;
   String? notificationIcon;
@@ -47,7 +49,14 @@ class ForwardController {
       '@drawable/ic_stat_notifications_active'
     );
     const InitializationSettings initializationSettings = InitializationSettings(android: androidInitializationSettings);
-    await _notifications.initialize(initializationSettings);
+    await _notifications.initialize(
+      initializationSettings,
+      onSelectNotification: selectNotification
+    );
+  }
+
+  Future<void> selectNotification(payload) async {
+    showWebView(context: context!, url: payload);
   }
 
   Future<void> showNotifications() async {
@@ -56,7 +65,7 @@ class ForwardController {
       notificationTitle, 
       notificationDescription, 
       await notificationDetails(),
-      payload: 'Works'
+      payload: notificationPayload
     );
   }
 }
