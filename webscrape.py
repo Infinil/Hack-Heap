@@ -1,10 +1,10 @@
-from concurrent.futures import process
 from appwrite.client import Client
 from appwrite.services.databases import Databases
 from appwrite.query import Query
 import dateparser
-import selenium
 from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
 
 def main(request, response):
@@ -42,8 +42,14 @@ class WebScrapeFunctions:
 
   def devfolio(self):
     source = 'Devfolio'
-    driver = webdriver.Chrome(ChromeDriverManager().install())
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
     driver.get("https://devfolio.co/hackathons")
+    hackathons = driver.find_elements(By.XPATH, '//div[@class="sc-ddcaxn hkkldD sc-ibEqUB dMpoHf"]')
+    for hackathon in hackathons:
+      name=hackathon.find_element(By.XPATH, './/h5[@class="sc-fxvKuh klAoDB"]').text
+      mode=hackathon.find_element(By.XPATH, './/div[@class="sc-hjQCSK hgqIBf"]').text
+      print(mode)
+
   
   def hackerearth(self):
     source = 'Hackerearth'
