@@ -26,6 +26,12 @@
 Hack Heap is an application for aggregating all the hackathons. It is a solution created by webscraping popular websites and providing it to you. So you can check them all out easily at one place.
 
 ## HOW TO INSTALL
+
+## IMPLEMENTATION
+* Made a python script for webscraping.
+* Hosted the script as a cloud function with appwrite and made it to run every hour to update documents in the database.
+* Made the android app using flutter framework which displays the documents from the database.
+* Added additional features like refresh, notify etc to the app.
     
     
 ## TECHNOLOGIES USED
@@ -37,7 +43,16 @@ Hack Heap is an application for aggregating all the hackathons. It is a solution
 
 ## CHALLENGES FACED
 
-### SCRAPING
-<p> - Since codes of site can change with time, a constant code is really hard to manage and needs to be updated quite frequently since the code breaks if that is not done. </p>
-    <p>    - Cloud function can error if any problem occurs in the code which can stop database from updating. </p>
+#### SCRAPING
+<p> - Codes of site can change with time therefore a constant code for the scrape is not possible and needs to be updated quite frequently since the code breaks if that is not done. </p>
+    <p>    - An error could occur in the cloud function if the code comes across any problem which can stop database from updating. </p>
+    
+#### APPLICATION
+<p> - The push notifications kept showing error and it took a lot of time to work around with that.
+<p> - The images for one of the sites were blurry so we had to go round about it by using the logos.
+<p> - The attributes for different sites were similar but not same so we had to decide on how to display and what to display. </p>
 
+## FUTURE VISION
+<p> - We aim to expand our database so we can provide more information.
+<p> - Setting up reminders which can be customised as per the user's needs.
+<p> - We also want to add contests and challenges with the hackathons.
