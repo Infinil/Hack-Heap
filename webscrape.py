@@ -50,14 +50,3 @@ class WebScrapeFunctions:
   
   def mlh(self):
     source = 'MLH'
-
-class Request:
-  env = {
-    'API_ENDPOINT' : 'http://backend.limitnil.com/v1',
-    'DATABASE_ID' : 'default',
-    'PROJECT_ID' : 'hackheap',
-    'SECRET_KEY' : '8dd766283f12dc44b71e5b152e5e2cd373a964f20dd4d4086fdd48c5c41b4f5dc8a351fb28db6762fb8beefac063d302fbef1492081ae5fdb587444739fa8cfaf4e247b9ed17618c4b88e2271b3b7a0af8e14f21eb5e0b1d79458047750d6cba5d8b5988715df099511b3cd7f3af32ca35e1a8ef08ded1d049b4dde31bc38cf3',
-    'COLLECTION_ID' : 'hackathons',
-  }
-
-main(Request(),2)
