@@ -85,4 +85,37 @@ class WebScrape:
     pass
 
   def mlh(self):
-    pass
+    source = 'MLH'
+    sitecode=requests.get('https://mlh.io/seasons/2023/events').text
+    soup=BeautifulSoup(sitecode,'lxml')
+    hackathons=soup.select('div.event-wrapper')
+    stored_date = 0
+    for hackathon in hackathons:
+      url=hackathon.a['href']
+      imageurl=hackathon.select_one('div.image-wrap img')['src']
+      name=hackathon.select_one('h3.event-name').text
+      date=hackathon.select_one('p.event-date').text
+      date=date.strip()
+      startdate=date.split('-')[0] + '2022'
+      date += ' 2022'
+      mode=hackathon.select_one('div.event-hybrid-notes').text
+      if "Hybrid" in mode:
+        mode="Hybrid"
+      elif "Digital" in mode:
+        mode="Online"
+      elif "In-Person Only" in mode:
+        mode="Offline"
+      if int(dateparser.parse(startdate).timestamp()) < stored_date:
+        break
+      stored_date = int(dateparser.parse(startdate).timestamp())
+      dict_data : dict = {
+        'name' : name,
+        'url' : url,
+        'image' : imageurl,
+        'timeline' : date,
+        'date' : stored_date,
+        'participants' : None,
+        'mode' : mode,
+        'source' : source
+      }
+      self.common_operations(dict_data)
