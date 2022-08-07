@@ -5,6 +5,7 @@ from appwrite.client import Client
 from appwrite.services.databases import Databases
 from appwrite.query import Query
 from bs4 import BeautifulSoup
+from lxml import etree
 
 def main(request, response):
   client : Client = Client()
@@ -26,10 +27,27 @@ class WebScrape:
     self.request = request
   
   def common_operations(self, dict_data: dict):
-    pass
+    docs = self.database.list_documents(
+      self.request.env['COLLECTION_ID'],
+      queries=[
+        Query.equal('url', dict_data['url'])
+      ]
+    )
+    if docs['total'] == 0:
+      self.database.create_document(
+        collection_id = self.request.env['COLLECTION_ID'],
+        document_id = 'unique()',
+        data = dict_data
+      )
   
   def devfolio(self):
-    pass
+    source = 'Devfolio'
+    sitecode=requests.get('https://devfolio.co/hackathons').text
+    bs = BeautifulSoup(sitecode, "html.parser")
+    model = etree.HTML(str(bs)) 
+    hackathons = model.xpath('//div[@class="sc-ddcaxn hkkldD sc-ibEqUB dMpoHf"]')
+    for hackathon in hackathons:
+      name=hackathon.xpath('.//h5[@class="sc-fxvKuh klAoDB"]')[0].text
 
   def hackerearth(self):
     pass
