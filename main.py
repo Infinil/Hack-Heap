@@ -79,10 +79,53 @@ class WebScrape:
       }
       self.common_operations(dict_data)
 
-
-
   def hackerearth(self):
-    pass
+    source = 'Hackerearth'
+    sitecode=requests.get('https://www.hackerearth.com/challenges/hackathon/').text
+    soup=BeautifulSoup(sitecode,'lxml')
+    hackathons=soup.select("div.challenge-card-modern")
+    for hackathon in hackathons:
+      name=hackathon.select_one('span.challenge-list-title') 
+      if name==None:
+        continue
+      elif len(name.text) < 2:
+        name = 'Unknown Name'
+      else:
+        name=name.text
+      participants=int(hackathon.select_one('div.registrations').text)
+      image=hackathon.a.div.div['style'].split('\'')[1]
+      register=hackathon.a['href']
+      sitecode2=requests.get(register).text
+      soup2=BeautifulSoup(sitecode2,'lxml')
+      infos=soup2.select_one('div.event-details-container')
+      everything=infos.select('div.regular')
+      if len(everything)==6:
+        iphase=everything[0].text
+        istartson=everything[1].text.split(',')[0]
+        hphase=everything[3].text
+        hend=everything[5].text.split(",")
+        if iphase==hphase:
+          mode=iphase.strip()
+        else:
+          mode="Hybrid"
+        date=istartson+" -"+hend[0]+hend[1]
+      elif len(everything)==3:
+        mode=everything[0].text.strip()
+        istartson=everything[1].text.split(',')[0].strip()
+        hend=everything[2].text.split(",")
+      date=istartson+" -"+hend[0]+hend[1]
+      startdate=istartson+hend[1]
+      dict_data : dict = {
+        'name' : name,
+        'url' : register,
+        'participants' : participants,
+        'image' : image,
+        'date' : int(dateparser.parse(startdate).timestamp()),
+        'timeline' : date,
+        'mode' : mode,
+        'source' : source
+      }
+      self.common_operations(dict_data=dict_data)
 
   def mlh(self):
     source = 'MLH'
