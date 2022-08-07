@@ -1,3 +1,4 @@
+from urllib.request import urlopen
 import dateparser
 import requests 
 from urllib.parse import unquote
@@ -19,7 +20,6 @@ def main(request, response):
   web_scrape_obj.devfolio()
   web_scrape_obj.hackerearth()
   web_scrape_obj.mlh()
-  return response.send('Function Execution Completed.')
 
 class WebScrape:
   def __init__(self, database: Databases, request):
@@ -43,11 +43,43 @@ class WebScrape:
   def devfolio(self):
     source = 'Devfolio'
     sitecode=requests.get('https://devfolio.co/hackathons').text
-    bs = BeautifulSoup(sitecode, "html.parser")
-    model = etree.HTML(str(bs)) 
-    hackathons = model.xpath('//div[@class="sc-ddcaxn hkkldD sc-ibEqUB dMpoHf"]')
+    soup=BeautifulSoup(sitecode,'lxml')
+    hackathons=soup.select("div.sc-ibEqUB")
     for hackathon in hackathons:
-      name=hackathon.xpath('.//h5[@class="sc-fxvKuh klAoDB"]')[0].text
+      name=hackathon.select_one('h5.sc-fxvKuh').text
+      mode=hackathon.select_one('div.sc-hjQCSK').text
+      urlclass=hackathon.select_one('a.sc-bPPhlf')
+      url=urlclass['href']
+      sitecode2=requests.get(url).text
+      soup2=BeautifulSoup(sitecode2,'lxml')
+      date=soup2.select_one('p.cgHRZl').text
+      if date=="Online":
+        continue
+      startdatesplit=date.split("-")
+      startdate2=startdatesplit[1].split(",")[1].replace(" ",'')
+      startdate1=startdatesplit[0]
+      startdate=startdate1+startdate2
+      startdate = int(dateparser.parse(startdate).timestamp())
+      infos=soup2.select_one('div.sc-hjQCSK div span img')['srcset']
+      image=infos.split('=')[1].replace('&w','')
+      image = unquote(image)
+      participants=hackathon.select_one('p.kVBkpy')
+      if participants!=None:
+        participants=participants.text.split()[0].replace("+",'')
+        participants=int(participants)
+      dict_data : dict = {
+        'name' : name,
+        'url' : url,
+        'image' : image,
+        'participants' : participants,
+        'date' : startdate,
+        'timeline' : date,
+        'mode' : mode,
+        'source' : source
+      }
+      self.common_operations(dict_data)
+
+
 
   def hackerearth(self):
     pass
