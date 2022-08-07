@@ -127,7 +127,7 @@ class _HackathonPageState extends ConsumerState<HackathonPage> {
       collectionId: ref.read(hackathonsCIDProvider),
       queries: [ 
         Query.equal('source', widget.selectedSource),
-        Query.greaterEqual('date', Jiffy().unix())
+        Query.greaterEqual('date', Jiffy().subtract(days: 1).unix())
       ],
       limit: 100,
       offset: 0,

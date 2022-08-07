@@ -65,7 +65,7 @@ class WebScrape:
       startdate1=startdatesplit[0]
       startdate=startdate1+startdate2
       startdate = int(dateparser.parse(startdate).timestamp())
-      infos=soup2.select_one('div.sc-hjQCSK div span img')['srcset']
+      infos=soup2.select_one('div.jMnjua div span img')['srcset']
       image=infos.split('=')[1].replace('&w','')
       image = unquote(image)
       participants=hackathon.select_one('p.kVBkpy')
