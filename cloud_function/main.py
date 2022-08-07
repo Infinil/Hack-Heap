@@ -1,4 +1,3 @@
-from urllib.request import urlopen
 import dateparser
 import requests 
 from urllib.parse import unquote
@@ -6,7 +5,6 @@ from appwrite.client import Client
 from appwrite.services.databases import Databases
 from appwrite.query import Query
 from bs4 import BeautifulSoup
-from lxml import etree
 
 def main(request, response):
   client : Client = Client()
@@ -20,6 +18,7 @@ def main(request, response):
   web_scrape_obj.devfolio()
   web_scrape_obj.hackerearth()
   web_scrape_obj.mlh()
+  return response.send('Function execution completed.')
 
 class WebScrape:
   def __init__(self, database: Databases, request):
@@ -39,6 +38,12 @@ class WebScrape:
         document_id = 'unique()',
         data = dict_data
       )
+    else:
+      self.database.update_document(
+        collection_id = self.request.env['COLLECTION_ID'],
+        document_id = docs['documents'][0]['$id'],
+        data = dict_data
+      )
   
   def devfolio(self):
     source = 'Devfolio'
@@ -47,7 +52,7 @@ class WebScrape:
     hackathons=soup.select("div.sc-ibEqUB")
     for hackathon in hackathons:
       name=hackathon.select_one('h5.sc-fxvKuh').text
-      mode=hackathon.select_one('div.sc-hjQCSK').text
+      mode=hackathon.select_one('div.hgqIBf').text
       urlclass=hackathon.select_one('a.sc-bPPhlf')
       url=urlclass['href']
       sitecode2=requests.get(url).text
