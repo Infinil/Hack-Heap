@@ -45,8 +45,8 @@ Hack Heap is an application for aggregating all the hackathons. It is a solution
     <p>    - An error could occur in the cloud function if the code comes across any problem which can stop database from updating. </p>
     
 #### APPLICATION
-<p> - The push notifications kept showing error and it took a lot of time to work around with that.
-<p> - The images for one of the sites were blurry so we had to go round about it by using the logos.
+<p> - The push notifications kept showing an error but we were finally able to fix it (thanks to stack overflow).
+<p> - The images for one of the sites were blurry so we had to go round about it by only showing the text info.
 <p> - The attributes for different sites were similar but not same so we had to decide on how to display and what to display. </p>
 
 ## FUTURE VISION
